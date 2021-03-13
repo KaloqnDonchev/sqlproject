@@ -1,0 +1,64 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+  </head>
+
+  <body>
+      <h1>Add new student</h1>
+      <form action="/create" method="POST">
+          <label for="name">Name:</label><br>
+          <input type="text" id="name" name="name"><br>
+          <label for="age">Age:</label><br>
+          <input type="text" id="age" name="age"><br>
+          <label for="class">Class:</label><br>
+          <input type="text" id="class" name="class"><br>
+          <label for="fn">Fn:</label><br>
+          <input type="text" id="fn" name="fn"><br>
+          <label for="address">Address:</label><br>
+          <input type="text" id="address" name="address"><br>
+          <label for="iban">IBAN:</label><br>
+          <input type="text" id="iban" name="iban"><br><br>
+          <input type="submit" value="Add student to the database">
+      </form>
+      <h1>View a student</h1>
+      <form action="/view" method="GET">
+        <label for="fn">FN:</label>
+        <input type="text" id="fn" name="fn"><br><br>
+        <input type="submit" value="Show the chosen student">
+      </form>
+      <h1>Delete a student</h1>
+      <form action="/delete" method="POST">
+        <label for="fn">FN:</label>
+        <input type="text" id="fn" name="fn"><br><br>
+        <input type="submit" value="Delete student from the database">
+      </form>
+      <h1>List all students</h1>
+      <form id="all-students" action="/list">
+        <select id="sorting">
+          <option value="">None</option>
+          <option value="ASC">Ascending</option>
+          <option value="DESC">Descending</option>
+        </select>
+        <button type="submit">List all students</button>
+      </form>
+      <p style="width: 500px; height: 300px;"></p>
+  </body>
+  <script defer>
+    const form = document.getElementById('all-students');
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const select = document.getElementById('sorting');
+      let url = '/list';
+      if (select.value) {
+        url = `${url}?sort=${select.value}`;
+      }
+      fetch(url)
+        .then((response) => response.text())
+        .then((list) => {
+          document.querySelector('p').innerText = list;
+        })
+    });
+  </script>
+</html>
